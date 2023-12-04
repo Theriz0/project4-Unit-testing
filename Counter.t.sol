@@ -10,6 +10,7 @@ contract CounterTest is Test {
 
     // Dummy address for Counter constructor.
     address ownerAddress = address(0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266);
+    receive() external payable {}
 
     // Setup for all tests.
     function setUp() public {
@@ -77,7 +78,7 @@ contract CounterTest is Test {
         vm.prank(ownerAddress);
         counter.upgradeMemberToVip(ownerAddress);
         vm.prank(ownerAddress);
-        
+
         assertEq(counter.isMemberVip(ownerAddress), true,
         "Owner should be VIP after upgrade");
     }
@@ -85,12 +86,17 @@ contract CounterTest is Test {
     // Test mint function with valid input for onlyVip
     /*function test_Mint_OnlyVip() public {
 
+        vm.prank(ownerAddress);
+        counter.upgradeMemberToVip(ownerAddress);
+
+        //Set a price for testing
+        vm.prank(ownerAddress);
+        counter.setPrice(1,1);
+
         // Mint as VIP
         uint256 mintAmount = 5;
         uint256 initialSupply = counter.supply();
 
-        vm.prank(ownerAddress);
-        counter.upgradeMemberToVip(ownerAddress);
         vm.prank(ownerAddress);
         counter.mint(ownerAddress, mintAmount);
 
@@ -99,18 +105,27 @@ contract CounterTest is Test {
         "Supply should be reduced after minting");
     }*/
 
-    /*function testFuzz_Withdraw(uint256 amount) public {
-        uint256 fuzzAmount = 222;
-
-        // Make the sender address the owner for the test
+    // Fuzz testing for the withdraw function
+    function testFuzz_Withdraw(uint96 amount) public {
+        // Prank the owner's address to act as the onlyOwner
         vm.prank(ownerAddress);
+        counter.upgradeMemberToVip(ownerAddress);
 
-        payable(address(safe)).transfer(amount);
+        // Deposit some funds into the contract
+        payable(address(counter)).transfer(amount);
 
+        // Get the initial balances
         uint256 preBalance = address(this).balance;
-        safe.withdraw();
 
+        // Call the withdraw function
+        vm.prank(ownerAddress);
+        counter.withdraw();
+
+        // Get the post balances
         uint256 postBalance = address(this).balance;
-        assertEq(preBalance + fuzzAmount, postBalance);
-    }*/
+
+        // Ensure that the contract balance is reduced and the owner balance is increased by the deposited amount
+        assertEq(postBalance, preBalance + amount, 
+        "Owner balance should be increased by the deposited amount");
+    }
 }
