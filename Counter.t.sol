@@ -89,16 +89,11 @@ contract CounterTest is Test {
         vm.prank(ownerAddress);
         counter.upgradeMemberToVip(ownerAddress);
 
-        // Mint as VIP
-        uint256 mintAmount = 5;
-        uint256 initialSupply = counter.supply();
-
         vm.prank(ownerAddress);
-        counter.mint(ownerAddress, mintAmount);
+        counter.mint(ownerAddress, 4);
 
         // Check if supply was correctly reduced
-        assertEq(counter.supply(), initialSupply - mintAmount,
-        "Supply should be reduced after minting");
+        assertEq(counter.balanceOf(ownerAddress), counter.totalSupply());
     }*/
 
     // Fuzz testing for the withdraw function
