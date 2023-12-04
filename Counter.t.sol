@@ -28,7 +28,7 @@ contract CounterTest is Test {
     // TODO: Rest of the tests using both assertion and fuzzing testing.
 
     // Test setPrice function with valid input for onlyVip
-    function test_SetPrice_OnlyVip() public {
+    function testSetPrice_OnlyVip() public {
         // Upgrade sender to VIP
         vm.prank(ownerAddress);
         counter.upgradeMemberToVip(ownerAddress);
@@ -40,7 +40,7 @@ contract CounterTest is Test {
     }
 
     // Test getPreviousPrice function
-    function test_GetPreviousPrice() public {
+    function testGetPreviousPrice() public {
         // Set prices directly in previousPrices
         counter.getPreviousPrice(5);
         counter.getPreviousPrice(3);
@@ -56,7 +56,7 @@ contract CounterTest is Test {
     }
 
     // Test upgradeMemberToVip function
-    function test_UpgradeMemberToVip() public {
+    function testUpgradeMemberToVip() public {
         // Prank the owner's address to act as the onlyOwner
         vm.prank(ownerAddress);
         counter.upgradeMemberToVip(ownerAddress);
@@ -69,7 +69,7 @@ contract CounterTest is Test {
     }
 
     // Test isMemberVip function
-    function test_IsMemberVip() public {
+    function testIsMemberVip() public {
         // Check if owner is VIP (should be VIP)
         assertEq(counter.isMemberVip(ownerAddress), false,
         "Owner should not be VIP initially");
@@ -84,7 +84,7 @@ contract CounterTest is Test {
     }
 
     // Test mint function with valid input for onlyVip
-    /*function test_Mint_OnlyVip() public {
+    /*function testMint_OnlyVip() public {
 
         vm.prank(ownerAddress);
         counter.upgradeMemberToVip(ownerAddress);
