@@ -89,10 +89,6 @@ contract CounterTest is Test {
         vm.prank(ownerAddress);
         counter.upgradeMemberToVip(ownerAddress);
 
-        //Set a price for testing
-        vm.prank(ownerAddress);
-        counter.setPrice(1,1);
-
         // Mint as VIP
         uint256 mintAmount = 5;
         uint256 initialSupply = counter.supply();
