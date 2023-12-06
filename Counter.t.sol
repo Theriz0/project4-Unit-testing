@@ -28,7 +28,7 @@ contract CounterTest is Test {
     // TODO: Rest of the tests using both assertion and fuzzing testing.
 
     // Test setPrice function with valid input for onlyVip
-    function testSetPrice_OnlyVip() public {
+    function test_SetPrice_OnlyVip() public {
         // Upgrade sender to VIP
         vm.prank(ownerAddress);
         counter.upgradeMemberToVip(ownerAddress);
@@ -40,7 +40,7 @@ contract CounterTest is Test {
     }
 
     // Test getPreviousPrice function
-    function testGetPreviousPrice() public {
+    function test_GetPreviousPrice() public {
         // Set prices directly in previousPrices
         counter.getPreviousPrice(5);
         counter.getPreviousPrice(3);
@@ -56,7 +56,7 @@ contract CounterTest is Test {
     }
 
     // Test upgradeMemberToVip function
-    function testUpgradeMemberToVip() public {
+    function test_UpgradeMemberToVip() public {
         // Prank the owner's address to act as the onlyOwner
         vm.prank(ownerAddress);
         counter.upgradeMemberToVip(ownerAddress);
@@ -69,7 +69,7 @@ contract CounterTest is Test {
     }
 
     // Test isMemberVip function
-    function testIsMemberVip() public {
+    function test_IsMemberVip() public {
         // Check if owner is VIP (should be VIP)
         assertEq(counter.isMemberVip(ownerAddress), false,
         "Owner should not be VIP initially");
@@ -84,17 +84,19 @@ contract CounterTest is Test {
     }
 
     // Test mint function with valid input for onlyVip
-    /*function testMint_OnlyVip() public {
+    function test_Mint_OnlyVip() public {
 
         vm.prank(ownerAddress);
         counter.upgradeMemberToVip(ownerAddress);
+        vm.deal(ownerAddress, 35);
 
+        // Mint as VIP
         vm.prank(ownerAddress);
-        counter.mint(ownerAddress, 4);
+        counter.mint{value: 35}(ownerAddress, 5500);
 
         // Check if supply was correctly reduced
         assertEq(counter.balanceOf(ownerAddress), counter.totalSupply());
-    }*/
+    }
 
     // Fuzz testing for the withdraw function
     function testFuzz_Withdraw(uint96 amount) public {
