@@ -88,11 +88,11 @@ contract CounterTest is Test {
 
         vm.prank(ownerAddress);
         counter.upgradeMemberToVip(ownerAddress);
-        vm.deal(ownerAddress, 35);
+        vm.deal(ownerAddress, 10);
 
         // Mint as VIP
         vm.prank(ownerAddress);
-        counter.mint{value: 35}(ownerAddress, 5500);
+        counter.mint{value: 10}(ownerAddress, 5500);
 
         // Check if supply was correctly reduced
         assertEq(counter.balanceOf(ownerAddress), counter.totalSupply());
